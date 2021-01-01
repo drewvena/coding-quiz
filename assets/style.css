@@ -4,3 +4,7 @@
     padding: 2rem;
     border: 1rem;;
 }
+#startTime {
+    background-color: rebeccapurple;
+    opacity: 70%;
+}

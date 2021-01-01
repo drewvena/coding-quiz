@@ -1,28 +1,28 @@
 var questions = [
     {
-        q: "Commonly used data types DO NOT include:",
+        title: "Commonly used data types DO NOT include:",
         choices: ["strings", "booleans", "alerts", "numbers"],
-        a: "alerts"
+        answer: "alerts"
     },
     {
-        q: "The condition in an if / else statement is enclosed within ____.",
+        title: "The condition in an if / else statement is enclosed within ____.",
         choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-        a: "parentheses"
+        answer: "parentheses"
     },
     {
-        q: "Arrays in Javascript can be used to store ____.",
+        title: "Arrays in Javascript can be used to store ____.",
         choices: ["numbers and strings", "other arrays", "booleans", "all of the above"],
-        a: "all of the above"
+        answer: "all of the above"
     },
     {
-        q: "String values must be enclosed within ____ when being assigned to variables.",
+        title: "String values must be enclosed within ____ when being assigned to variables.",
         choices: ["commas", "curly brackets", "quotes", "parenthesis"],
-        a: "quotes"
+        answer: "quotes"
     },
     {
-            q: "A very useful tool for used during development and debugging for printing content to the debugger is:",
+            title: "A very useful tool for used during development and debugging for printing content to the debugger is:",
         choices: ["Javascript", "terminal / bash", "for loops", "console log"],
-        a: "console log"
+        answer: "console log"
     },
 
 ];
@@ -38,13 +38,55 @@ var holdInterval = 0;
 var penalty = 10;
 var ulCreate = document.createElement("ul");
 
+timer.addEventListener("click", function () {
+    if (holdInterval === 0) {
+        holdInterval = setInterval(function () {
+            secondsLeft--;
+            currentTime.textContent = "Time: " + secondsLeft;
+
+            if (secondsLeft <= 0) {
+                clearInterval(holdInterval);
+                complete();
+                currentTime.textContent = "That's a wrap!";
+            }
+        }, 1000);
+    
+    }
+    render(questionIndex);
+});
 
 function render(questionIndex) { 
     questionsDiv.innerHTML = "";
     ulCreate.innerHTML = "";
     for (var i = 0; i < questions.length; i++) {
         var userQuestion = questions[questionIndex].title;
+        var userChoices = questions[questionIndex].choices;
         questionsDiv.textContent = userQuestion;
     }
- 
+    userChoices.forEach(function (newItem) {
+        var listItem = document.createElement("li");
+        listItem.textContent = newItem;
+        questionsDiv.appendChild(ulCreate);
+        ulCreate.appendChild(listItem);
+        listItem.addEventListener("click", (compare));
+    })
+}
+function compare(event) {
+    var element = event.target;
+
+    if (element.matches("li")) {
+
+        var createDiv = document.createElement("div");
+        createDiv.setAttribute("id", "createDiv");
+        // correct
+        if (element.textContent == questions[questionIndex].answer) {
+            score++;
+            createDiv.textContent = "Correct! The answer is:  " + questions[questionIndex].answer;
+        } else {
+            secondsLeft = secondsLeft - penalty;
+            createDiv.textContent = "Wrong! The correct answer is:  " + questions[questionIndex].answer;
+        }
+
+    }
+    questionIndex++;
 }
